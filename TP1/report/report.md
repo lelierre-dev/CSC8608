@@ -1,5 +1,6 @@
 # CI : Modern Computer Vision
 
+Yohan Delière
 lien github : https://github.com/lelierre-dev/CSC8608
 en local
 
@@ -91,3 +92,78 @@ Quand on agrandit la bbox, SAM a plus de contexte et peut inclure des éléments
 ![alt text](img/image-14.png)
 
 ## Exercice 6 :
+
+### Premier cas:
+bbox seule, sans points (index 1) : 
+
+![alt text](img/image-23.png)
+
+
+avec points :
+
+```
+{
+"n_points":2
+    "points":[
+     0:[
+        0:143
+        1:389
+        2:0
+    ]
+    1:[
+        0:275
+        1:370
+        2:1
+    ]
+]
+}
+```
+
+![alt text](img/image-22.png)
+index 1 :
+![alt text](img/image-21.png)
+
+
+### Deuxième cas:
+
+bbox seule, sans points (index 2) : 
+![alt text](img/image-24.png)
+
+1 seul point :
+![alt text](img/image-26.png)
+resultat (index 2): 
+![alt text](img/image-25.png)
+
+2 points :
+![alt text](img/image-28.png)
+![alt text](img/image-27.png)
+
+```
+{
+"n_points":2
+    "points":[
+        0:[
+        0:275
+        1:370
+        2:1
+    ]
+        1:[
+        0:163
+        1:123
+        2:0
+    ]
+]
+}
+```
+Les points BG sont indispensables quand la bbox contient plusieurs objets proches. Ils permettent d’indiquer explicitement ce qui doit être exclu (arrière-plan, deuxième objet, sol). Ils sont aussi utiles pour séparer des objets collés ou partiellement superposés (arbre/camion). Malgré cela, certains cas restent difficiles, les points décalés de seulements quelques pixels peuvent tout fausser, le background/deuxième objet peut ne pas totalement être éliminé.
+
+## Exercice 7 :
+
+Bilan (POC vers produit) : 
+1) Fond complexe et objets proches dans la bbox : SAM confond le sujet avec l’arrière-plan ou un second objet. Pour améliorer la situation on peut contraindre la bbox, ajouter des points BG/FG. 
+2) Objets fins/transparents (pieds de lampe) : masque incomplet ou déchiré. 
+Action : dataset dédié avec ces cas. 
+3) Occlusions : contours instables, score incertain. Action : demander plusieurs vues, proposer multimask et choix utilisateur, et conserver les meilleurs candidats.
+
+
+Industrialisation : je loggerais et monitorerais en priorité 1) temps d’inférence et device (CPU/MPS/CUDA) pour détecter les régressions de perf et les changement de device, 2) scores des masques et indice choisi pour suivre la confiance et repérer des ambiguïtés systématiques, 3) taille bbox et positions des points FG/BG pour corréler les erreurs avec le prompt utilisateur, 4) métriques du masque (aire, périmètre, bbox) pour détecter des sorties aberrantes (masques vides ou démesurés), 5) taux d’erreurs de chargement image/poids pour monitorer la robustesse de la pipeline 6) dérive des distributions de scores/aires dans le temps pour repérer une dégradation progressive.
