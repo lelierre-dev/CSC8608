@@ -4,3 +4,6 @@ numpy
 matplotlib
 # SAM v1 (Segment Anything)
 git+https://github.com/facebookresearch/segment-anything.git
+
+
+
