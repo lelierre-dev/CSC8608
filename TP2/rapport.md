@@ -32,7 +32,7 @@ Léger défaut : cadrage un peu serré (bouteille coupée en bas) + pseudo-texte
 
 ![alt text](img/image-4.png)
 Run02 – EulerA / 15 steps / guidance 7.5
-Moins stable : apparition d’une 2ᵉ bouteille dorée (hors-prompt) + composition déséquilibrée.
+Moins stable : apparition d’une 2ème bouteille dorée (hors-prompt) + composition déséquilibrée.
 Détails de l’étiquette plus “mous”, typiques d’un rendu encore “incomplet”.
 Impression globale : cohérence en baisse, “drift” plus facile.
 
@@ -95,7 +95,7 @@ Les changements portent surtout sur des textures (cuir plus lisse/synthétique),
 En e-commerce, ce réglage est relativement utilisable pour rester fidèle au produit, mais non conforme à un packshot “fond blanc” demandé dans le prompt.
 
 À strength = 0.60, certains attributs (teinte brune, présence d’un zip) subsistent, mais l’identité produit commence à dériver fortement : forme beaucoup moins fidèle, détails clés effacés, et main altéré.
-Les variations deviennent structurelles : arrière-plan décoratif, rendu plus “studio/3D”, et perte de caractéristiques propres au modèle initial.
+Les variations deviennent structurelles : arrière-plan décoratif, rendu "mauvaise 3D”, et perte de caractéristiques propres au modèle initial.
 En e-commerce, le risque est déjà inacceptable pour une image de cette complexité.
 
 À strength = 0.85, la conservation est minimale (principalement une couleur proche), tandis que la forme, les détails et la scène sont remplacés.
@@ -104,5 +104,67 @@ Les textures se simplifient et l’objet devient visuellement différent, rendan
 En conclusion, à faible strength, l’objet reste correct mais le fond blanc n’est pas atteint. à fort strength, la scène change davantage mais le modèle altère aussi l’objet.
 
 ## Exercice 5 : Mini-produit Streamlit (MVP) : Text2Img + Img2Img avec paramètres
+##### Text2Img (headphones): 
+![alt text](img/image-13.png)
 
-## Exercice 6 :
+##### Img2Img (gourde): 
+![alt text](img/image-14.png)
+(n'a pas changé la couleur)
+
+## Exercice 6 : Évaluation (léger) + réflexion 
+
+
+##### grille d’évaluation “light” : 
+
+- Prompt adherence (0–2)
+- Visual realism (0–2)
+- Artifacts (0–2) — 2 = aucun artefact gênant
+- E-commerce usability (0–2) — 2 = publiable après retouches mineures
+- Reproducibility (0–2) — 2 = paramètres suffisants pour reproduire
+
+###### text2img baseline :
+![alt text](img/image-15.png)
+Prompt:
+ultra-realistic product photo of a clean white sneaker with subtle stitching, side view, centered, isolated on a seamless pure white background, studio softbox lighting, soft shadow under the product, very sharp, commercial packshot, 85mm lens
+
+- Prompt adherence : 1, non centré 
+- Visual realism : 2, beau détails 
+- Artifacts : 2 = aucun artefact gênant
+- E-commerce usability (0) = non centré
+- Reproducibility : 2 = même resultat avec même prompt
+
+total : 7/10
+
+######  text2img avec un paramètre “extrême” (steps = 60) :
+![alt text](img/image-16.png)
+Prompt:
+ultra-realistic high-end product photo of a transparent glass perfume bottle with a glossy black cap, crisp edges, realistic refractions and reflections, centered, isolated on a seamless pure white background, professional studio lighting, soft shadow, extremely sharp,commercial packshot 
+
+- Prompt adherence : 1, non centré 
+- Visual realism : 2, très beau détails, reflets, ombre
+- Artifacts : 2 = aucun artefact gênant
+- E-commerce usability (2) = à recentrer manuellement 
+- Reproducibility : 2 = même resultat avec même prompt
+
+total : 9/10
+
+
+######  une img2img à strength élevé :
+
+![alt text](img/image-18.png)
+
+Prompt:
+"white background"
+image originale :
+![alt text](img/image-17.png)
+
+- Prompt adherence : 1, objet different mais le fond est bien changé  
+- Visual realism : 1, effet mauvaise 3D.
+- Artifacts : 1 = reflet incohérent
+- E-commerce usability 0 = inutilisable
+- Reproducibility : 2 = même resultat avec même prompt
+
+total : 5/10
+
+##### réflexion
+Dans ce TP, on observe le compromis quality vs latency et cost. Augmenter num_inference_steps 15 -> 30 -> 50 améliore la netteté et la stabilité des détails, mais les gains deviennent vite décroissants alors que le temps de génération augmente presque linéairement. Le scheduler influence aussi le style, avec EulerA plus “punchy” et DDIM plus “smooth” mais parfois moins strict sur la composition, donc on choisit selon l’objectif e-commerce ou créatif. La reproductibilité exige au minimum model_id, scheduler, seed avec device et generator, steps, guidance_scale, height/width, prompt et negative prompt. Elle peut casser si on change la version du modèle, le scheduler, le backend CPU/CUDA/MPS, la précision fp32 ou certaines versions de librairies. Enfin, en e-commerce, les risques sont importants. Le modèle peut halluciner des éléments, produire du pseudo-texte ou des logos inventés, et générer des images trompeuses. En img2img, on l’a vu avec strength=0.85 où le produit dérive trop et ne correspond plus au portefeuille initial. Pour limiter ces risques, je privilégierais des pipelines contraints rappelant l’inpainting du fond plutôt qu’une transformation globale, avec un strength bas, des prompts explicites “no hands” et “isolated”, et des contrôles humains plus une vérification de cohérence avec la photo source.
