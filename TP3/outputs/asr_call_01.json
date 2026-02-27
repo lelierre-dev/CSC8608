@@ -1,0 +1,101 @@
+{
+  "audio_path": "TP3/data/call_01.wav",
+  "model_id": "openai/whisper-small",
+  "device": "cpu",
+  "audio_duration_s": 41.532,
+  "elapsed_s": 24.34458637237549,
+  "rtf": 0.5861645567845394,
+  "segments": [
+    {
+      "segment_id": 0,
+      "start_s": 1.794,
+      "end_s": 4.158,
+      "text": "Hello, thank you for calling, please send me your support."
+    },
+    {
+      "segment_id": 1,
+      "start_s": 4.578,
+      "end_s": 6.91,
+      "text": "My name is Alex and I will help you today."
+    },
+    {
+      "segment_id": 2,
+      "start_s": 7.042,
+      "end_s": 9.95,
+      "text": "I'm calling about an order that arrived damaged."
+    },
+    {
+      "segment_id": 3,
+      "start_s": 11.554,
+      "end_s": 15.07,
+      "text": "The package was delivered yesterday but the screen is cracked."
+    },
+    {
+      "segment_id": 4,
+      "start_s": 15.65,
+      "end_s": 18.942,
+      "text": "I would like a refund or a replacement as soon as possible."
+    },
+    {
+      "segment_id": 5,
+      "start_s": 20.162,
+      "end_s": 22.142,
+      "text": "The order number is A."
+    },
+    {
+      "segment_id": 6,
+      "start_s": 22.402,
+      "end_s": 22.974,
+      "text": "x."
+    },
+    {
+      "segment_id": 7,
+      "start_s": 23.138,
+      "end_s": 23.646,
+      "text": "one"
+    },
+    {
+      "segment_id": 8,
+      "start_s": 23.938,
+      "end_s": 24.478,
+      "text": "9."
+    },
+    {
+      "segment_id": 9,
+      "start_s": 24.642,
+      "end_s": 25.31,
+      "text": "seven"
+    },
+    {
+      "segment_id": 10,
+      "start_s": 26.242,
+      "end_s": 26.91,
+      "text": "five."
+    },
+    {
+      "segment_id": 11,
+      "start_s": 27.746,
+      "end_s": 31.87,
+      "text": "you can reach me at john dot smith at example.com"
+    },
+    {
+      "segment_id": 12,
+      "start_s": 32.482,
+      "end_s": 34.142,
+      "text": "also my phone number is"
+    },
+    {
+      "segment_id": 13,
+      "start_s": 34.658,
+      "end_s": 35.582,
+      "text": "555."
+    },
+    {
+      "segment_id": 14,
+      "start_s": 35.97,
+      "end_s": 37.534,
+      "text": "0, 1, 9, 9."
+    }
+  ],
+  "full_text": "Hello, thank you for calling, please send me your support. My name is Alex and I will help you today. I'm calling about an order that arrived damaged. The package was delivered yesterday but the screen is cracked. I would like a refund or a replacement as soon as possible. The order number is A. x. one 9. seven five. you can reach me at john dot smith at example.com also my phone number is 555. 0, 1, 9, 9."
+}

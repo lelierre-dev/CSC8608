@@ -115,10 +115,10 @@ def run_img2img_experiments() -> None:
     init_path = os.path.join(base_dir, "inputs", "product.jpg")
 
     prompt = (
-        "isolated product, no hands, no person, seamless pure white background, centered, "
-        "85mm lens, softbox lighting”"
+        "ultra-realistic product photo of the same item on a white background, "
+        "studio lighting, soft shadow, very sharp"
     )
-    negative = "hand, fingers, human, arm, table, chair, background, scene, props"
+    negative = "text, watermark, logo, low quality, blurry, deformed"
 
     strengths = [
         ("run07_strength035", 0.35),
