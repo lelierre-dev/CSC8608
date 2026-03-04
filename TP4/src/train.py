@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse
+import os
 import yaml
 import torch
 import torch.nn as nn
@@ -154,6 +155,21 @@ def main() -> None:
                 f"train_f1={m_train['macro_f1']:.4f} val_f1={m_val['macro_f1']:.4f} test_f1={m_test['macro_f1']:.4f} "
                 f"epoch_time_s={t.elapsed_s:.4f}"
             )
+
+    os.makedirs("TP4/runs", exist_ok=True)
+
+    ckpt_path = os.path.join(
+        "TP4/runs",
+        f"{args.model}.pt",
+    )
+
+    payload = {
+        "model": args.model,
+        "config_path": args.config,
+        "state_dict": model.state_dict(),
+    }
+    torch.save(payload, ckpt_path)
+    print("checkpoint_saved:", ckpt_path)
 
     print(f"total_train_time_s={total_train_s:.4f}")
     train_loop_time = time.time() - train_start

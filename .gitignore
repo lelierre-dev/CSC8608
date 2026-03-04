@@ -2,3 +2,5 @@ TP1/models/
 TP3/data/
 __pycache__/
 *.pyc
+
+TP4/runs/
